@@ -1,6 +1,6 @@
 import './App.css';
 
-export const App = () => (
+export const App: React.FC = () => (
   <div className="App">
     <header className="App-header">
       <p>

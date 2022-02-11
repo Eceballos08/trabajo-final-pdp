@@ -22,5 +22,12 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "indent": ["error", 2],
+        "quotes": ["error", "single"],
+        "no-empty": "warn",
+        "max-len": ["error", { "code": 100 }],
+        "eol-last": ["error", "always"],
+        "camelcase": ["warn", { "properties": "always" }],
+        "@typescript-eslint/explicit-function-return-type": ["error"]
     }
 }
