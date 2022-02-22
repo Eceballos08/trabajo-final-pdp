@@ -20,6 +20,17 @@ const useDeckCards = () => {
 		winner: false,
 	};
 
+	const SUITS_VALUE: { [suit: string]: number } = {
+		HEARTS: 4,
+		SPADES: 3,
+		DIAMONDS: 2,
+		CLUBS: 1
+	};
+
+	const searchCards = (newCard: Card, deckPlayer: DeckPlayer): Card[] => {
+		return deckPlayer.cards.filter((card) => card.value === newCard.value);
+	};
+
 	const [deckPlayerOne, setDeckPlayerOne] = useState<DeckPlayer>(
 		INITIAL_STATE_PLAYER_ONE
 	);
@@ -33,6 +44,7 @@ const useDeckCards = () => {
 		if (cardRepeatPlayerOne.length > 0) {
 			cardRepeatPlayerOne.push(newCards[0]);
 		}
+
 		const cardRepeatPlayerTwo = searchCards(newCards[1], deckPlayerTwo);
 		if (cardRepeatPlayerTwo.length > 0) {
 			cardRepeatPlayerTwo.push(newCards[1]);
@@ -43,6 +55,7 @@ const useDeckCards = () => {
 			cards: [...deckPlayerOne.cards, newCards[0]],
 			cardsWins: cardRepeatPlayerOne,
 		});
+
 		setDeckPlayerTwo({
 			...deckPlayerTwo,
 			cards: [...deckPlayerTwo.cards, newCards[1]],
@@ -50,53 +63,35 @@ const useDeckCards = () => {
 		});
 	};
 
-	const searchCards = (newCard: Card, deckPlayer: DeckPlayer): Card[] => {
-		return deckPlayer.cards.filter((card) => card.value === newCard.value);
-	};
-
 	const setEndGame = (): void => {
-		if (
-			deckPlayerOne.cardsWins.length > 0 ||
-			deckPlayerTwo.cardsWins.length > 0
-		) {
-			endGame(true);
-			if (deckPlayerOne.cardsWins.length === deckPlayerTwo.cardsWins.length) {
-				let playerOneScore = 0;
-				let playerTwoScore = 0;
-				deckPlayerOne.cardsWins.forEach((card) => {
-					playerOneScore += winForSuit(card.suit);
-				});
-				deckPlayerTwo.cardsWins.forEach((card) => {
-					playerTwoScore += winForSuit(card.suit);
-				});
-
-				if (playerOneScore > playerTwoScore) {
-					setDeckPlayerOne({ ...deckPlayerOne, winner: true });
-				} else {
-					setDeckPlayerTwo({ ...deckPlayerTwo, winner: true });
-				}
-			} else {
-				deckPlayerOne.cardsWins.length > 0
-					? setDeckPlayerOne({ ...deckPlayerOne, winner: true })
-					: setDeckPlayerTwo({ ...deckPlayerTwo, winner: true });
-			}
+		if (!deckPlayerOne.cardsWins.length && !deckPlayerTwo.cardsWins.length) {
+			return;
 		}
+
+		endGame(true);
+
+		if (deckPlayerOne.cardsWins.length !== deckPlayerTwo.cardsWins.length) {
+			deckPlayerOne.cardsWins.length > 0
+				? setDeckPlayerOne({ ...deckPlayerOne, winner: true })
+				: setDeckPlayerTwo({ ...deckPlayerTwo, winner: true });
+			return;
+		}
+
+		const playerOneScore = deckPlayerOne.cardsWins
+			.reduce((sum, card) => sum + winForSuit(card.suit), 0);
+
+		const playerTwoScore = deckPlayerTwo.cardsWins
+			.reduce((sum, card) => sum + winForSuit(card.suit), 0);
+
+		if (playerOneScore > playerTwoScore) {
+			setDeckPlayerOne({ ...deckPlayerOne, winner: true });
+			return;
+		}
+
+		setDeckPlayerTwo({ ...deckPlayerTwo, winner: true });
 	};
 
-	const winForSuit = (suit: string): number => {
-		switch (suit) {
-			case 'HEARTS':
-				return 4;
-			case 'SPADES':
-				return 3;
-			case 'DIAMONDS':
-				return 2;
-			case 'CLUBS':
-				return 1;
-			default:
-				return 0;
-		}
-	};
+	const winForSuit = (suit: string): number => SUITS_VALUE[suit] ?? 0;
 
 	return {
 		deckPlayerOne,

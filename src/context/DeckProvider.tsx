@@ -12,6 +12,7 @@ const INITIAL_STATE: DeckState = {
 	playerTwo: '',
 	deck: {
 		success: false,
+		// eslint-disable-next-line camelcase
 		deck_id: '',
 		shuffled: false,
 		remaining: 0,

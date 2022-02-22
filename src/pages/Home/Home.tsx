@@ -6,10 +6,10 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 
 import { newDeck } from '../../services/deckService';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { DeckContext } from '../../context/DeckContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 
 export const Home: React.FC = () => {
 	const navigate = useNavigate();
@@ -34,6 +34,7 @@ export const Home: React.FC = () => {
 			navigate('/game');
 		},
 	});
+
 	return (
 		<>
 			<Grid
@@ -47,40 +48,33 @@ export const Home: React.FC = () => {
 				<Box>
 					<form onSubmit={formPlayers.handleSubmit}>
 						<TextField
+							{...formPlayers.getFieldProps('playerOne')}
 							value={formPlayers.values.playerOne}
 							onChange={formPlayers.handleChange}
 							fullWidth
 							id="playerOne"
 							label="Player 1"
 							variant="standard"
-							error={
-								formPlayers.errors.playerOne &&
-								Boolean(formPlayers.errors.playerOne)
-									? true
-									: false
-							}
+							error={!!formPlayers.errors.playerOne}
 							helperText={
 								formPlayers.touched.playerOne && formPlayers.errors.playerOne
 							}
 						/>
 						<TextField
+							{...formPlayers.getFieldProps('playerTwo')}
 							value={formPlayers.values.playerTwo}
 							onChange={formPlayers.handleChange}
 							fullWidth
 							id="playerTwo"
 							label="Player 2"
 							variant="standard"
-							error={
-								formPlayers.errors.playerTwo &&
-								Boolean(formPlayers.errors.playerTwo)
-									? true
-									: false
-							}
+							error={!!formPlayers.errors.playerTwo}
 							helperText={
 								formPlayers.touched.playerTwo && formPlayers.errors.playerTwo
 							}
 						/>
 						<Button
+							style={{ margin: '1rem' }}
 							type="submit"
 							fullWidth
 							variant="contained"

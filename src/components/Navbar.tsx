@@ -23,6 +23,14 @@ const useStyles = makeStyles(() => ({
 	},
 }));
 
+const FinalIcon = ({ success }: { success: boolean }) => (
+	success ? (
+		<VerifiedIcon sx={{ fontSize: 40 }} color="success" />
+	) : (
+		<CancelIcon sx={{ fontSize: 40 }} color="error" />
+	)
+);
+
 interface Props {
 	getCardsRef: (newCards: Card[]) => void;
 	endGameRef: () => void;
@@ -39,28 +47,6 @@ export const Navbar = ({
 	const classes = useStyles();
 	const { deckState } = useContext(DeckContext);
 	const navigate = useNavigate();
-	const cardMock: Card[] = [
-		{
-			code: '7D',
-			image: 'https://deckofcardsapi.com/static/img/7D.png',
-			images: {
-				svg: 'https://deckofcardsapi.com/static/img/7D.svg',
-				png: 'https://deckofcardsapi.com/static/img/7D.png',
-			},
-			value: '7',
-			suit: 'DIAMONDS',
-		},
-		{
-			code: '3H',
-			image: 'https://deckofcardsapi.com/static/img/3H.png',
-			images: {
-				svg: 'https://deckofcardsapi.com/static/img/3H.png',
-				png: 'https://deckofcardsapi.com/static/img/3H.png',
-			},
-			value: '3',
-			suit: 'HEARTS',
-		},
-	];
 
 	useEffect(() => {
 		endGameRef();
@@ -69,10 +55,11 @@ export const Navbar = ({
 	const getCardsClick = async () => {
 		if (deckState.endGame) {
 			navigate('/');
-		} else {
-			const { cards } = await getCards(deckState.deck.deck_id);
-			getCardsRef(cardMock);
+			return
 		}
+
+		const { cards } = await getCards(deckState.deck.deck_id);
+		getCardsRef(cards);
 	};
 
 	return (
@@ -81,12 +68,7 @@ export const Navbar = ({
 				<Typography variant="h5" component="div">
 					{`Jugador 1: ${deckState.playerOne}`}
 				</Typography>
-				{deckState.endGame &&
-					(deckPlayerOneRef.winner ? (
-						<VerifiedIcon sx={{ fontSize: 40 }} color="success" />
-					) : (
-						<CancelIcon sx={{ fontSize: 40 }} color="error" />
-					))}
+				{deckState.endGame && <FinalIcon success={deckPlayerOneRef.winner} />}
 				<div className={classes.grow}></div>
 				<IconButton onClick={getCardsClick}>
 					<PlayCircleOutlineIcon sx={{ fontSize: 40 }} />
@@ -95,12 +77,7 @@ export const Navbar = ({
 				<Typography variant="h5" component="div">
 					{`Jugador 2: ${deckState.playerTwo}`}
 				</Typography>
-				{deckState.endGame &&
-					(deckPlayerTwoRef.winner ? (
-						<VerifiedIcon sx={{ fontSize: 40 }} color="success" />
-					) : (
-						<CancelIcon sx={{ fontSize: 40 }} color="error" />
-					))}
+				{deckState.endGame && <FinalIcon success={deckPlayerTwoRef.winner} />}
 			</Toolbar>
 		</AppBar>
 	);

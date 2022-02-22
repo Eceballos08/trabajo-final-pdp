@@ -1,4 +1,3 @@
-import { boolean } from 'yup/lib/locale';
 import { DeckState, Deck } from '../interfaces/interface';
 
 type DeckAction =
@@ -7,10 +6,7 @@ type DeckAction =
 	| { type: 'addDeck'; payload: Deck }
 	| { type: 'endGame'; payload: boolean };
 
-export const deckReducer = (
-	state: DeckState,
-	action: DeckAction
-): DeckState => {
+export const deckReducer = (state: DeckState, action: DeckAction): DeckState => {
 	switch (action.type) {
 		case 'addPlayerOne':
 			return {
@@ -23,16 +19,19 @@ export const deckReducer = (
 				...state,
 				playerTwo: action.payload,
 			};
+
 		case 'addDeck':
 			return {
 				...state,
 				deck: action.payload,
 			};
+
 		case 'endGame':
 			return {
 				...state,
 				endGame: action.payload,
 			};
+
 		default:
 			return state;
 	}

@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 
 import { DeckProvider } from "./context/DeckProvider";
-import { Game } from './pages/Game';
-import { Home } from './pages/Home';
+import { Game } from './pages/Game/Game';
+import { Home } from './pages/Home/Home';
 
 
 export const App: React.FC = () => (
@@ -11,6 +11,7 @@ export const App: React.FC = () => (
 			<Routes>
 				<Route path="/" element={<Home />}></Route>
 				<Route path="/game" element={<Game />}></Route>
+				<Route path="/**" element={<Home />}></Route>
 			</Routes>
 		</section>
 	</DeckProvider>
