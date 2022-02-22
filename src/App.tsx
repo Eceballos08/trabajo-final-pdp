@@ -1,19 +1,17 @@
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+
+import { DeckProvider } from "./context/DeckProvider";
+import { Game } from './pages/Game';
+import { Home } from './pages/Home';
+
 
 export const App: React.FC = () => (
-  <div className="App">
-    <header className="App-header">
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
+	<DeckProvider>
+		<section>
+			<Routes>
+				<Route path="/" element={<Home />}></Route>
+				<Route path="/game" element={<Game />}></Route>
+			</Routes>
+		</section>
+	</DeckProvider>
 );
