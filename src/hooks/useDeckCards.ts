@@ -20,6 +20,7 @@ const useDeckCards = () => {
 		winner: false,
 	};
 
+	//TODO: QUÉ HACE ESTO
 	const SUITS_VALUE: { [suit: string]: number } = {
 		HEARTS: 4,
 		SPADES: 3,
@@ -39,6 +40,8 @@ const useDeckCards = () => {
 		INITIAL_STATE_PLAYER_TWO
 	);
 
+	//obtener las primeras 10 cartas
+	//slice: devuelve una copia de un array sin modificar el original
 	const setInitialCards = (cards: Card[]): void => {
 		setDeckPlayerOne({
 			...deckPlayerOne,
@@ -54,6 +57,7 @@ const useDeckCards = () => {
 	const deleteCard = (card: Card, player: 0 | 1): void => {
 		const setDeck = player === 0 ? setDeckPlayerOne : setDeckPlayerTwo;
 
+		//filter: devuelve un array con todos los elementos que cumplan con la condicion dada
 		setDeck((player) => {
 			return {
 				...player,
@@ -64,6 +68,7 @@ const useDeckCards = () => {
 		checkCards(player === 0 ? deckPlayerOne : deckPlayerTwo);
 	}
 
+	//funcion para pedir las cartas: como la del profe
 	const setCards = (cards: Card[]): void => {
 		setDeckPlayerOne({
 			...deckPlayerOne,

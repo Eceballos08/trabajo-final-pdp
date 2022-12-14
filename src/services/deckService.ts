@@ -1,5 +1,6 @@
 import { instanceAxios } from './axiosHelper';
 
+//obtener la baraja
 export const newDeck = async () => {
 	try {
 		const { data } = await instanceAxios.get('/new/shuffle/?deck_count=1');
@@ -9,6 +10,7 @@ export const newDeck = async () => {
 	}
 };
 
+//obtener las cartas que se irán repartiendo
 export const getCards = async (idDeck: string) => {
 	try {
 		const { data } = await instanceAxios.get(`/${idDeck}/draw/?count=2`);
@@ -18,6 +20,7 @@ export const getCards = async (idDeck: string) => {
 	}
 };
 
+//obtener las 10 primeras cartas
 export const getInitialCards = async (idDeck: string) => {
 	try {
 		const { data } = await instanceAxios.get(`/${idDeck}/draw/?count=20`)
