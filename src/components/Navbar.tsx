@@ -32,34 +32,34 @@ const FinalIcon = ({ success }: { success: boolean }) => (
 );
 
 interface Props {
-	getCardsRef: (newCards: Card[]) => void;
+	setCardsRef: (newCards: Card[]) => void;
 	endGameRef: () => void;
 	deckPlayerOneRef: DeckPlayer;
 	deckPlayerTwoRef: DeckPlayer;
 }
 
 export const Navbar = ({
-	getCardsRef,
+	setCardsRef,
 	endGameRef,
 	deckPlayerOneRef,
 	deckPlayerTwoRef,
 }: Props) => {
 	const classes = useStyles();
-	const { deckState } = useContext(DeckContext);
 	const navigate = useNavigate();
+	const { deckState } = useContext(DeckContext);
 
 	useEffect(() => {
 		endGameRef();
 	}, [deckPlayerTwoRef.cards]);
 
 	const getCardsClick = async () => {
-		if (deckState.endGame) {
+		if (deckState.endGame || deckState.deck.remaining === 0) {
 			navigate('/');
 			return
 		}
 
 		const { cards } = await getCards(deckState.deck.deck_id);
-		getCardsRef(cards);
+		setCardsRef(cards);
 	};
 
 	return (
@@ -70,7 +70,10 @@ export const Navbar = ({
 				</Typography>
 				{deckState.endGame && <FinalIcon success={deckPlayerOneRef.winner} />}
 				<div className={classes.grow}></div>
-				<IconButton onClick={getCardsClick}>
+				<IconButton
+					onClick={getCardsClick}
+					disabled={deckPlayerOneRef.cards.length + deckPlayerTwoRef.cards.length > 20}
+				>
 					<PlayCircleOutlineIcon sx={{ fontSize: 40 }} />
 				</IconButton>
 				<div className={classes.grow}></div>

@@ -39,28 +39,45 @@ const useDeckCards = () => {
 		INITIAL_STATE_PLAYER_TWO
 	);
 
-	const getCards = (newCards: Card[]): void => {
-		const cardRepeatPlayerOne = searchCards(newCards[0], deckPlayerOne);
-		if (cardRepeatPlayerOne.length > 0) {
-			cardRepeatPlayerOne.push(newCards[0]);
-		}
-
-		const cardRepeatPlayerTwo = searchCards(newCards[1], deckPlayerTwo);
-		if (cardRepeatPlayerTwo.length > 0) {
-			cardRepeatPlayerTwo.push(newCards[1]);
-		}
-
+	const setInitialCards = (cards: Card[]): void => {
 		setDeckPlayerOne({
 			...deckPlayerOne,
-			cards: [...deckPlayerOne.cards, newCards[0]],
-			cardsWins: cardRepeatPlayerOne,
+			cards: cards.slice(0, 10),
 		});
 
 		setDeckPlayerTwo({
 			...deckPlayerTwo,
-			cards: [...deckPlayerTwo.cards, newCards[1]],
-			cardsWins: cardRepeatPlayerTwo,
+			cards: cards.slice(10),
 		});
+	}
+
+	const deleteCard = (card: Card, player: 0 | 1): void => {
+		const setDeck = player === 0 ? setDeckPlayerOne : setDeckPlayerTwo;
+
+		setDeck((player) => {
+			return {
+				...player,
+				cards: player.cards.filter((c: Card) => c.code !== card.code)
+			}
+		});
+
+		checkCards(player === 0 ? deckPlayerOne : deckPlayerTwo);
+	}
+
+	const setCards = (cards: Card[]): void => {
+		setDeckPlayerOne({
+			...deckPlayerOne,
+			cards: [...deckPlayerOne.cards, cards[0]],
+		});
+
+		setDeckPlayerTwo({
+			...deckPlayerTwo,
+			cards: [...deckPlayerTwo.cards, cards[1]],
+		});
+	}
+
+	const checkCards = ({ cards }: DeckPlayer): void => {
+		console.log(cards)
 	};
 
 	const setEndGame = (): void => {
@@ -96,7 +113,9 @@ const useDeckCards = () => {
 	return {
 		deckPlayerOne,
 		deckPlayerTwo,
-		getCards,
+		setCards,
+		setInitialCards,
+		deleteCard,
 		setEndGame,
 	};
 };

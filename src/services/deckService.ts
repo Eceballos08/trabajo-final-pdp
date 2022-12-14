@@ -17,3 +17,12 @@ export const getCards = async (idDeck: string) => {
 		console.log(error);
 	}
 };
+
+export const getInitialCards = async (idDeck: string) => {
+	try {
+		const { data } = await instanceAxios.get(`/${idDeck}/draw/?count=20`)
+		return data;
+	} catch (error) {
+		console.error(error)
+	}
+}

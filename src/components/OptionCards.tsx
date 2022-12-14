@@ -21,7 +21,7 @@ const CardsWin = ({ cards }: { cards: Card[] }) => (
 			{cards.length > 0 ? (
 				cards.map((card, index) => (
 					<Grid item xs={2} key={index}>
-						<Cards cardRef={card.image} key={index} />
+						<Cards cardRef={card.image} />
 					</Grid>
 				))
 			) : (
